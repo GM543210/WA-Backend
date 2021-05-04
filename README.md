@@ -1,4 +1,4 @@
-# WA-Backend
+# WA-Backend-exQs-Me
 Web Apps 2021 Back-end Repository
 
 Aplication of an online Queueing theme made for purposes of easing access of queueing to Croatian 
