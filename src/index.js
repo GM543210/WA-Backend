@@ -94,6 +94,12 @@ app.get('/institutions/get', async (req, res) => {
 
     res.json(institutions)
 })
+//dohvacanje broja ustanova
+app.get('/institutions/size', async (req, res) => {
+    let db = await dbConnection()
+    let inst_num = await db.collection("institutions").count()
+    res.json(inst_num)
+})
 
 app.post('/institutions/update', async (req, res) => {
 
@@ -107,7 +113,8 @@ app.post('/institutions/update', async (req, res) => {
             institution_name: data.institution_name,
             institution_adress: data.institution_adress,
             institution_wh: data.institution_wh,
-            branch_office_city: data.branch_office_city
+            branch_office_city: data.branch_office_city,
+            avgWait: data.avgWait
           }},
           {upsert: false}
       )
