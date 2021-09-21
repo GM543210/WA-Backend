@@ -6,7 +6,7 @@ import { restart } from 'nodemon';
 import db from './db.js';
 
 const app = express()  // instanciranje aplikacije
-const port = 3000  // port na kojem će web server slušati
+const port = "https://exqseme.herokuapp.com/"  // port na kojem će web server slušati
 
 app.use(cors());
 app.use(express.json());
@@ -270,7 +270,5 @@ app.post('/manage-queue', (req, res) => {
     res.json({});
 })
 
-app.listen(process.env.PORT || 3000);
-/* 
-app.listen(port, () => console.log(`Slušam na portu ${port}!`)) */
+app.listen(port, () => console.log(`Slušam na portu ${port}!`))
 //pokrecemo app
