@@ -6,7 +6,7 @@ import { restart } from 'nodemon';
 import db from './db.js';
 
 const app = express()  // instanciranje aplikacije
-const port = "https://exqseme.herokuapp.com/"  // port na kojem će web server slušati
+const port = 3000  // port na kojem će web server slušati
 
 app.use(cors());
 app.use(express.json());
