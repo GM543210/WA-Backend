@@ -15,9 +15,9 @@ const lastInQueue = []
 const queue = []
 
 //registracija admina
-app.post('/registration', async (req, res) => {
-    let data = req.body
-    delete data._id
+app.post('/registration', async (req, res) => { 
+    let data = req.body                         
+    delete data._id                             
 
     let db = await dbConnection()
     let result = await db.collection("admins").insertOne(data)
@@ -76,10 +76,14 @@ app.post('/institutions/create', async (req, res) => {
     }
 })
 
-//dohvacanje institucije
-app.get('/institutions/get', async (req, res) => {
+//reg ruta, u 2. se parametru poziva fcija s 2 param - request i response
+//ispis u browser, odnosno vracanje x podataka u browser - preko http-a odnosno response obj-a
+//response ima 2 metode - send i json(slanje pod)
 
-    let data = req.query
+//dohvacanje institucije
+app.get('/institutions/get', async (req, res) => { 
+
+    let data = req.query //let data - podatci s kojima cemo raditi, req.query - sadrzi sve parametre
     let institutions = null
 
     let db = await dbConnection()
@@ -92,7 +96,7 @@ app.get('/institutions/get', async (req, res) => {
         institutions = await db.collection("institutions").find().toArray()
     }
 
-    res.json(institutions)
+    res.json(institutions) //slanje pod
 })
 //dohvacanje broja ustanova
 app.get('/institutions/size', async (req, res) => {
@@ -168,6 +172,27 @@ app.get('/queue/state', async (req, res) => {
 
     let current = queue.find(q => q.institution_name == data.institution_name)
 
+    /* let index = queue.indexOf(current)
+    queue.splice(index, 1)  */
+
+    let next = queue.find(q => q.institution_name == data.institution_name)
+
+    let size = queue.filter(q => q.institution_name == data.institution_name).length
+
+    let queueState = {
+        size,
+        current: current != undefined ? current.queue_number : 0,
+        next: next != undefined ? next.queue_number : 0 //+1 kod number
+    }
+
+    res.json(queueState)
+})
+
+app.get('/queue/next', async (req, res) => {
+    let data = req.query
+
+    let current = queue.find(q => q.institution_name == data.institution_name)
+
     let index = queue.indexOf(current)
     queue.splice(index, 1)
 
@@ -184,12 +209,33 @@ app.get('/queue/state', async (req, res) => {
     res.json(queueState)
 })
 
-// sajlemo u backend odabranu ustanovu
+app.get('/queue/fix', async (req, res) => {
+    let data = req.query
+
+    let current = queue.find(q => q.institution_name == data.institution_name)
+
+    let index = queue.indexOf(current)
+    queue.splice(index, 1)
+
+    let next = queue.find(q => q.institution_name == data.institution_name)
+
+    let size = queue.filter(q => q.institution_name == data.institution_name).length
+
+    let queueState = {
+        size,
+        current: current != undefined ? current.queue_number - 1 : 0,
+        next: next != undefined ? next.queue_number : 0
+    }
+
+    res.json(queueState)
+})
+
+// saljemo u backend odabranu ustanovu
 app.post('/select-organization', (req, res) => {
     res.json({});
 })
 
-// sajlemo u backend odabrani redni broj korisnika
+// saljemo u backend odabrani redni broj korisnika
 app.post('/get-in-line', (req, res) => {
     res.json({});
 })
@@ -225,3 +271,4 @@ app.post('/manage-queue', (req, res) => {
 })
 
 app.listen(port, () => console.log(`Slušam na portu ${port}!`))
+//pokrecemo app
