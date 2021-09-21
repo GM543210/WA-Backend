@@ -270,5 +270,7 @@ app.post('/manage-queue', (req, res) => {
     res.json({});
 })
 
-app.listen(port, () => console.log(`Slušam na portu ${port}!`))
+app.listen(process.env.PORT || 3000);
+/* 
+app.listen(port, () => console.log(`Slušam na portu ${port}!`)) */
 //pokrecemo app
